@@ -9,13 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sin.narspigtwja.body.ContextReq;
 import ru.sin.narspigtwja.body.ContextRes;
+import ru.sin.narspigtwja.service.ContextServ;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "context")
 public class ContextCnt {
+    private final ContextServ contextServ;
+
     @PostMapping()
-    public ResponseEntity<ContextRes> postContext(@RequestBody ContextReq req) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ContextRes(""));
+    public ResponseEntity<ContextRes> postContext(@RequestBody ContextReq contextReq) {
+        return ResponseEntity.status(HttpStatus.OK).body(contextServ.postContext(contextReq));
     }
 }
