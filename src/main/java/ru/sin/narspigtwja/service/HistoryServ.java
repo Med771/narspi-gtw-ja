@@ -9,6 +9,8 @@ import ru.sin.narspigtwja.body.HistoryRes;
 @RequiredArgsConstructor
 public class HistoryServ {
     public HistoryRes postHistory(HistoryReq historyReq) {
+        // TODO: add method from RabbitTools
+
         return null;
     }
 }
