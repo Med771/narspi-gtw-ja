@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sin.narspigtwja.body.ArchiveReq;
 import ru.sin.narspigtwja.body.ArchiveRes;
-import ru.sin.narspigtwja.service.HistoryServ;
+import ru.sin.narspigtwja.service.ArchiveServ;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "archive")
 public class ArchiveCnt {
-    private final HistoryServ historyServ;
+    private final ArchiveServ archiveServ;
 
     @PostMapping()
     public ResponseEntity<ArchiveRes> postHistory(@RequestBody ArchiveReq req) {
-        return ResponseEntity.status(HttpStatus.OK).body(historyServ.postHistory(req));
+        return ResponseEntity.status(HttpStatus.OK).body(archiveServ.postHistory(req));
     }
 }

@@ -7,7 +7,7 @@ import ru.sin.narspigtwja.body.ArchiveRes;
 
 @Service
 @RequiredArgsConstructor
-public class HistoryServ {
+public class ArchiveServ {
     public ArchiveRes postHistory(ArchiveReq archiveReq) {
         // TODO: add method from RabbitTools
 
