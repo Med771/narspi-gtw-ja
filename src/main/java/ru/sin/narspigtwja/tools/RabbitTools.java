@@ -6,9 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
+import ru.sin.narspigtwja.body.HistoryReq;
+import ru.sin.narspigtwja.body.HistoryRes;
 import ru.sin.narspigtwja.body.QueryReq;
 import ru.sin.narspigtwja.body.QueryRes;
 import ru.sin.narspigtwja.config.RabbitConfig;
+import ru.sin.narspigtwja.model.History;
 
 import java.util.List;
 import java.util.UUID;
@@ -64,6 +67,52 @@ public class RabbitTools {
             logger.error("[UUID: {}] Query response exception: {}", userUuid, e.getMessage());
 
             throw new RuntimeException("Query response exception: " + e);
+        }
+    }
+
+    public List<History> sendAndReceiveHistory(int page, int size) {
+        UUID uuid = UUID.randomUUID();
+
+        HistoryReq req = new HistoryReq(
+                uuid,
+                page,
+                size
+        );
+
+        logger.info("[UUID: {}] Send history page: {} size: {}", uuid, page, size);
+
+        try {
+            HistoryRes res = rabbitTemplate.convertSendAndReceiveAsType(
+                    rabbitConfig.getGtwExc(),
+                    rabbitConfig.getHistoryReqRoutingKey(),
+                    req,
+                    new ParameterizedTypeReference<>() {}
+            );
+
+            if (res == null) {
+                logger.error("[UUID: {}] History response is null", uuid);
+
+                throw new RuntimeException("History response is null");
+            }
+
+            if (!uuid.equals(res.uuid())) {
+                logger.error("[UUID: {}] History response does not match uuid: {}", uuid, res.uuid());
+
+                throw new RuntimeException("History response does not match uuid");
+            }
+
+            if (res.messages() == null || res.messages().isEmpty()) {
+                logger.error("[UUID: {}] History response messages is empty", uuid);
+
+                throw new RuntimeException("History response messages is empty");
+            }
+
+            return res.messages();
+        }
+        catch (Exception e) {
+            logger.error("[UUID: {}] History response exception: {}", uuid, e.getMessage());
+
+            throw new RuntimeException("History response exception: " + e);
         }
     }
 }
