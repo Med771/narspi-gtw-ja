@@ -1,6 +1,6 @@
 package ru.sin.narspigtwja.body;
 
-public record HistoryReq(
+public record ArchiveReq(
         int page,
         int size
 ) {
