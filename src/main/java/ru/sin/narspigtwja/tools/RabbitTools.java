@@ -22,15 +22,14 @@ public class RabbitTools {
 
     private static final Logger logger = LoggerFactory.getLogger(RabbitTools.class);
 
-    public List<String> sendAndReceiveQuery(String query) {
-        UUID uuid = UUID.randomUUID();
-
+    public List<String> sendAndReceiveQuery(UUID userUuid, String query) {
         QueryReq req = new QueryReq(
-                uuid,
+
+                userUuid,
                 query
         );
 
-        logger.info("[UUID: {}] Send query: {}", uuid, query);
+        logger.info("[UUID: {}] Send query: {}", userUuid, query);
 
         try {
             QueryRes res = rabbitTemplate.convertSendAndReceiveAsType(
@@ -42,19 +41,19 @@ public class RabbitTools {
             );
 
             if (res == null) {
-                logger.error("[UUID: {}] Query response is null", uuid);
+                logger.error("[UUID: {}] Query response is null", userUuid);
 
                 throw new RuntimeException("Query response is null");
             }
 
-            if (!uuid.equals(res.uuid())) {
-                logger.error("[UUID: {}] Query response does not match uuid", uuid);
+            if (!userUuid.equals(res.uuid())) {
+                logger.error("[UUID: {}] Query response does not match uuid: {}", userUuid, res.uuid());
 
                 throw new RuntimeException("Query response does not match uuid");
             }
 
             if (res.docs() == null || res.docs().isEmpty()) {
-                logger.error("[UUID: {}] Query response docs is empty", uuid);
+                logger.error("[UUID: {}] Query response docs is empty", userUuid);
 
                 throw new RuntimeException("Query response docs is empty");
             }
@@ -62,7 +61,7 @@ public class RabbitTools {
             return res.docs();
         }
         catch (Exception e) {
-            logger.error("[UUID: {}] Query response exception: {}", uuid, e.getMessage());
+            logger.error("[UUID: {}] Query response exception: {}", userUuid, e.getMessage());
 
             throw new RuntimeException("Query response exception: " + e);
         }

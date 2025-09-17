@@ -17,7 +17,7 @@ public class ContextServ {
         List<String> docs;
 
         try {
-            docs = rabbitTools.sendAndReceiveQuery(contextReq.query());
+            docs = rabbitTools.sendAndReceiveQuery(contextReq.uuid(), contextReq.query());
         }
         catch (Exception e) {
             return new ContextRes(null);
