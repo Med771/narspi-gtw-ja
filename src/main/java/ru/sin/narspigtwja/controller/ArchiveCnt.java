@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.sin.narspigtwja.body.ArchiveReq;
-import ru.sin.narspigtwja.body.ArchiveRes;
+import ru.sin.narspigtwja.dto.ArchiveReq;
+import ru.sin.narspigtwja.dto.ArchiveRes;
 import ru.sin.narspigtwja.service.ArchiveServ;
 
 @RestController

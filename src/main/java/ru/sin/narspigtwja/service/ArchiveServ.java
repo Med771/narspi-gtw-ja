@@ -2,8 +2,8 @@ package ru.sin.narspigtwja.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sin.narspigtwja.body.ArchiveReq;
-import ru.sin.narspigtwja.body.ArchiveRes;
+import ru.sin.narspigtwja.dto.ArchiveReq;
+import ru.sin.narspigtwja.dto.ArchiveRes;
 import ru.sin.narspigtwja.model.History;
 import ru.sin.narspigtwja.tools.RabbitTools;
 

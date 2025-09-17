@@ -2,8 +2,8 @@ package ru.sin.narspigtwja.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sin.narspigtwja.body.ContextReq;
-import ru.sin.narspigtwja.body.ContextRes;
+import ru.sin.narspigtwja.dto.ContextReq;
+import ru.sin.narspigtwja.dto.ContextRes;
 import ru.sin.narspigtwja.tools.RabbitTools;
 
 import java.util.List;

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.sin.narspigtwja.body.ContextReq;
-import ru.sin.narspigtwja.body.ContextRes;
+import ru.sin.narspigtwja.dto.ContextReq;
+import ru.sin.narspigtwja.dto.ContextRes;
 import ru.sin.narspigtwja.service.ContextServ;
 
 @RestController

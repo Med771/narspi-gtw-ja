@@ -1,4 +1,4 @@
-package ru.sin.narspigtwja.body;
+package ru.sin.narspigtwja.dto;
 
 public record ArchiveReq(
         int page,

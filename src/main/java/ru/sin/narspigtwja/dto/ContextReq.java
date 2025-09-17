@@ -1,4 +1,4 @@
-package ru.sin.narspigtwja.body;
+package ru.sin.narspigtwja.dto;
 
 import ru.sin.narspigtwja.model.HistoryMessage;
 
