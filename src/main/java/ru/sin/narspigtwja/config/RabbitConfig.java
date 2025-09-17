@@ -15,14 +15,22 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     private final String queryReqQueue = "gtw.query.request.queue";
     private final String queryRepQueue = "gtw.query.reply.queue";
+    private final String historyReqQueue = "gtw.history.request.queue";
+    private final String historyRepQueue = "gtw.history.reply.queue";
 
     private final String gtwExc = "gtw.exchange";
 
     private final String queryReqRoutingKey = "gtw.query.request.routing.key";
+    private final String historyReqRoutingKey = "gtw.history.request.routing.key";
 
     @Bean
     public Queue queryRequestQueue() {
         return QueueBuilder.durable(queryReqQueue).build();
+    }
+
+    @Bean
+    public Queue historyRequestQueue() {
+        return QueueBuilder.durable(historyReqQueue).build();
     }
 
     @Bean
@@ -34,15 +42,30 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Queue historyReplyQueue() {
+        return QueueBuilder.nonDurable(historyRepQueue)
+                .autoDelete()
+                .exclusive()
+                .build();
+    }
+
+    @Bean
     public DirectExchange gtwExchange() {
         return new DirectExchange(gtwExc);
     }
 
     @Bean
-    public Binding queryRequestBinding(Queue queryRequestQueue, DirectExchange rpcExchange) {
+    public Binding queryRequestBinding(Queue queryRequestQueue, DirectExchange gtwExchange) {
         return BindingBuilder.bind(queryRequestQueue)
-                .to(rpcExchange)
+                .to(gtwExchange)
                 .with(queryReqRoutingKey);
+    }
+
+    @Bean
+    public Binding historyRequestBinding(Queue historyRequestQueue, DirectExchange gtwExchange) {
+        return BindingBuilder.bind(historyRequestQueue)
+                .to(gtwExchange)
+                .with(historyReqRoutingKey);
     }
 
     @Bean
