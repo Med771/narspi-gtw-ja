@@ -1,16 +1,25 @@
-# Build stage
-FROM maven:3.9.1-eclipse-temurin-17 AS build
+# Этап 1: Сборка
+FROM eclipse-temurin:21-jdk AS builder
+
+# Установка рабочей директории
 WORKDIR /app
+
+# Копируем файлы проекта
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
 
-# Run stage
-FROM eclipse-temurin:17-jdk-jammy
+# Сборка приложения с помощью Maven
+RUN apt-get update && apt-get install -y maven \
+    && mvn clean package -DskipTests
+
+# Этап 2: Запуск
+FROM eclipse-temurin:21-jre
+
+# Создаём рабочую директорию в контейнере
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+# Копируем собранный .jar файл из предыдущего этапа
+COPY --from=builder /app/target/*.jar app.jar
 
-EXPOSE 8080
-
-ENTRYPOINT ["java","-jar","/app/app.jar","--spring.config.location=file:/config/application.yml"]
+# Указываем команду запуска приложения
+ENTRYPOINT ["java", "-jar", "app.jar"]
