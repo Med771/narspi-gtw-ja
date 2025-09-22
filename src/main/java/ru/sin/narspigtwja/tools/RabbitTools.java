@@ -43,21 +43,15 @@ public class RabbitTools {
             );
 
             if (res == null) {
-                logger.error("[UUID: {}] Query response is null", userUuid);
-
-                throw new RuntimeException("Query response is null");
+                throw new RuntimeException("Response is null");
             }
 
             if (!userUuid.equals(res.uuid())) {
-                logger.error("[UUID: {}] Query response does not match uuid: {}", userUuid, res.uuid());
-
-                throw new RuntimeException("Query response does not match uuid");
+                throw new RuntimeException("Response does not match uuid");
             }
 
             if (res.docs() == null || res.docs().isEmpty()) {
-                logger.error("[UUID: {}] Query response docs is empty", userUuid);
-
-                throw new RuntimeException("Query response docs is empty");
+                throw new RuntimeException("Response docs is empty");
             }
 
             return res.docs();
@@ -89,21 +83,15 @@ public class RabbitTools {
             );
 
             if (res == null) {
-                logger.error("[UUID: {}] History response is null", uuid);
-
-                throw new RuntimeException("History response is null");
+                throw new RuntimeException("Response is null");
             }
 
             if (!uuid.equals(res.uuid())) {
-                logger.error("[UUID: {}] History response does not match uuid: {}", uuid, res.uuid());
-
-                throw new RuntimeException("History response does not match uuid");
+                throw new RuntimeException("Response does not match uuid");
             }
 
             if (res.messages() == null || res.messages().isEmpty()) {
-                logger.error("[UUID: {}] History response messages is empty", uuid);
-
-                throw new RuntimeException("History response messages is empty");
+                throw new RuntimeException("Response messages is empty");
             }
 
             return res.messages();
