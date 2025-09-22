@@ -27,7 +27,6 @@ public class RabbitTools {
 
     public List<String> sendAndReceiveQuery(UUID userUuid, String query) {
         QueryReq req = new QueryReq(
-
                 userUuid,
                 query
         );
