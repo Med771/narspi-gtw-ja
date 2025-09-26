@@ -14,9 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class RabbitConfig {
     private final String queryReqQueue = "gtw.query.request.queue";
-    private final String queryRepQueue = "gtw.query.reply.queue";
     private final String historyReqQueue = "gtw.history.request.queue";
-    private final String historyRepQueue = "gtw.history.reply.queue";
 
     private final String gtwExc = "gtw.exchange";
 
@@ -31,22 +29,6 @@ public class RabbitConfig {
     @Bean
     public Queue historyRequestQueue() {
         return QueueBuilder.durable(historyReqQueue).build();
-    }
-
-    @Bean
-    public Queue queryReplyQueue() {
-        return QueueBuilder.nonDurable(queryRepQueue)
-                .autoDelete()
-                .exclusive()
-                .build();
-    }
-
-    @Bean
-    public Queue historyReplyQueue() {
-        return QueueBuilder.nonDurable(historyRepQueue)
-                .autoDelete()
-                .exclusive()
-                .build();
     }
 
     @Bean
