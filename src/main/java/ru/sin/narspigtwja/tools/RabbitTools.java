@@ -11,6 +11,7 @@ import ru.sin.narspigtwja.body.HistoryRes;
 import ru.sin.narspigtwja.body.QueryReq;
 import ru.sin.narspigtwja.body.QueryRes;
 import ru.sin.narspigtwja.config.RabbitConfig;
+import ru.sin.narspigtwja.dto.ContextReq;
 import ru.sin.narspigtwja.model.History;
 
 import java.util.List;
@@ -25,13 +26,14 @@ public class RabbitTools {
 
     private static final Logger logger = LoggerFactory.getLogger(RabbitTools.class);
 
-    public List<String> sendAndReceiveQuery(UUID userUuid, String query) {
+    public String sendAndReceiveQuery(ContextReq contextReq) {
         QueryReq req = new QueryReq(
-                userUuid,
-                query
+                contextReq.uuid(),
+                contextReq.query(),
+                contextReq.history()
         );
 
-        logger.info("[UUID: {}] Send query: {}", userUuid, query);
+        logger.info("[UUID: {}] Send query: {}", contextReq.uuid(), contextReq.query());
 
         try {
             QueryRes res = rabbitTemplate.convertSendAndReceiveAsType(
@@ -46,18 +48,18 @@ public class RabbitTools {
                 throw new RuntimeException("Response is null");
             }
 
-            if (!userUuid.equals(res.uuid())) {
+            if (!contextReq.uuid().equals(res.uuid())) {
                 throw new RuntimeException("Response does not match uuid");
             }
 
-            if (res.docs() == null || res.docs().isEmpty()) {
-                throw new RuntimeException("Response docs is empty");
+            if (res.answer() == null) {
+                throw new RuntimeException("Response answer is empty");
             }
 
-            return res.docs();
+            return res.answer();
         }
         catch (Exception e) {
-            logger.error("[UUID: {}] Query response exception: {}", userUuid, e.getMessage());
+            logger.error("[UUID: {}] Query response exception: {}", contextReq.uuid(), e.getMessage());
 
             throw new RuntimeException("Query response exception: " + e);
         }
